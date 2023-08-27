@@ -19,7 +19,7 @@ const TaskOperations = ({ taskType, taskOperationsModal, handleAddTask, handleCl
 
 	return ReactDOM.createPortal(
 		<section className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-30 flex justify-center items-center font-primary">
-			<section className="bg-white w-96 h-auto rounded-xl shadow-[4px_4px_18px_-4px_#ffffff61] p-4">
+			<section className="bg-white w-full max-w-xs h-auto rounded-xl shadow-[4px_4px_18px_-4px_#ffffff61] p-4">
 				<div className="flex flex-col gap-4">
 					<p className="font-semibold text-lg">{taskOperationsModal?.type?.toLocaleLowerCase() === "add" ? "Add" : "Edit"} a Task</p>
 					<form onSubmit={(evt) => evt.preventDefault()} className="INPUT_DIV flex flex-col gap-2">
