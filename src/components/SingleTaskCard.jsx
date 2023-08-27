@@ -48,7 +48,6 @@ const SingleTaskCard = ({ tasks, title, taskType, handleTasks }) => {
 				<section className="mt-2 w-full flex flex-col gap-4">
 					<Droppable droppableId={taskType}>
 						{(provided, snapshot) => {
-							console.log(snapshot?.isDraggingOver);
 							return (
 								<section {...provided.droppableProps} ref={provided.innerRef} className="TASKS mx-3 flex flex-col">
 									{tasks?.map((task, ind) => {
