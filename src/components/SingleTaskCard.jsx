@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
 // 🚀🚀 Components / Hooks -----------------------------------------------/////////////////////////////////////////////////////////////////
+import { Droppable } from "react-beautiful-dnd";
 import SingleTask from "./SingleTask";
 import TaskOperations from "./modals/TaskOperations";
-import { Droppable } from "react-beautiful-dnd";
 
 // 🚀🚀 Icons / CSS ------------------------------------------------------/////////////////////////////////////////////////////////////////-
 import { MdOutlineAdd } from "react-icons/md";
@@ -47,7 +47,8 @@ const SingleTaskCard = ({ tasks, title, taskType, handleTasks }) => {
 
 				<section className="mt-2 w-full flex flex-col gap-4">
 					<Droppable droppableId={taskType}>
-						{(provided) => {
+						{(provided, snapshot) => {
+							console.log(snapshot?.isDraggingOver);
 							return (
 								<section {...provided.droppableProps} ref={provided.innerRef} className="TASKS mx-3 flex flex-col">
 									{tasks?.map((task, ind) => {
