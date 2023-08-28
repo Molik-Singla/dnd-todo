@@ -37,7 +37,7 @@ const SingleTaskCard = ({ tasks, title, taskType, handleTasks }) => {
 				/>
 			)}
 
-			<section className="SINGLE_TASK_CONTAINER w-80 h-auto pb-4 bg-white bg-opacity-50 rounded-xl shadow-[3px_4px_20px_-4px_#ffffff61]">
+			<section className="parent SINGLE_TASK_CONTAINER w-80 h-auto pb-4 bg-white bg-opacity-50 rounded-xl shadow-[3px_4px_20px_-4px_#ffffff61]">
 				<div className="task_header flex justify-between p-3">
 					<p className="font-semibold">{title}</p>
 					<span className="w-5 h-5 bg-white bg-opacity-60 rounded-full flex text-[10px] justify-center items-center font-semibold text-gray-500">
@@ -49,7 +49,7 @@ const SingleTaskCard = ({ tasks, title, taskType, handleTasks }) => {
 					<Droppable droppableId={taskType}>
 						{(provided, snapshot) => {
 							return (
-								<section {...provided.droppableProps} ref={provided.innerRef} className="TASKS mx-3 flex flex-col">
+								<section {...provided.droppableProps} ref={provided.innerRef} className="child TASKS mx-3 flex flex-col">
 									{tasks?.map((task, ind) => {
 										return (
 											<SingleTask

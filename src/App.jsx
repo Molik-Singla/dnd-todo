@@ -5,12 +5,27 @@ import React from "react";
 import Header from "./components/Header";
 import MainLayout from "./components/MainLayout";
 import HomePage from "./pages/HomePage";
+import AuthenticationPage from "./pages/AuthenticationPage";
+import { Route, Routes } from "react-router-dom";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import AppLayout from "./components/AppLayout";
 
 const App = () => {
 	return (
 		<MainLayout>
-			<Header />
-			<HomePage />
+			<Routes>
+				<Route
+					path="/"
+					element={
+						<ProtectedRoute>
+							<AppLayout>
+								<HomePage />
+							</AppLayout>
+						</ProtectedRoute>
+					}
+				/>
+				<Route path="/auth" element={<AuthenticationPage />} />
+			</Routes>
 		</MainLayout>
 	);
 };
