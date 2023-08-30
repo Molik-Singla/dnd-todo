@@ -1,88 +1,94 @@
 import React, { useState } from "react";
 
 // 🚀🚀 Components / Hooks -----------------------------------------------/////////////////////////////////////////////////////////////////
+import { useDispatch } from "react-redux";
 import { Droppable } from "react-beautiful-dnd";
+import { apiAddTask, apiEditTask } from "../features/taskSlice";
 import SingleTask from "./SingleTask";
 import TaskOperations from "./modals/TaskOperations";
-import Loader from "./Loader";
+import { toastError } from "../helpers/ToastFunctions";
 
 // 🚀🚀 Icons / CSS ------------------------------------------------------/////////////////////////////////////////////////////////////////-
 import { MdOutlineAdd } from "react-icons/md";
 
-const SingleTaskCard = ({ tasks, title, taskType, myTaskState, handleTasks }) => {
-	console.log("🚀 ~ file: SingleTaskCard.jsx:12 ~ SingleTaskCard ~ tasks:", tasks);
+const SingleTaskCard = ({ title, tasks, taskType }) => {
 	// 🚀🚀 States -----------------------------------------------------------/////////////////////////////////////////////////////////////
-	const [taskOperationsModal, setTaskOperationsModal] = useState({
-		bool: false,
-		type: "add",
-		payload: {},
-	});
+	const dispatch = useDispatch();
+	const [TaskOperationsModalBool, setTaskOperationsModalBool] = useState(false);
+	const [operationType, setOperationType] = useState("add"); // add / edit
+	const [editDefaultValue, setEditDefaultValue] = useState("");
 
-	const handleCloseModal = () => setTaskOperationsModal((prev) => ({ ...prev, bool: false }));
-	const handleOpenModal = (type = "add", payload) => setTaskOperationsModal((prev) => ({ ...prev, type, payload, bool: true }));
+	// 🚀🚀 useEffects / Functions -------------------------------------------/////////////////////////////////////////////////////////////
+	const handleAddTask = async (task) => {
+		try {
+			await dispatch(apiAddTask(task)).unwrap();
+		} catch (err) {
+			toastError(err?.message || "Something went wrong");
+		}
+	};
+	const handleEditTask = (task) => {
+		try {
+			dispatch(apiEditTask({ id: task.id, title: task.title }));
+		} catch (err) {
+			toastError(err?.message || "Something went wrong");
+		}
+	};
+
+	const handleOpenModal = () => setTaskOperationsModalBool(true);
+	const handleModalAndEditDefaultValue = (task) => {
+		handleOpenModal();
+		setEditDefaultValue(task);
+	};
+	const handleCloseModal = () => setTaskOperationsModalBool(false);
 
 	return (
 		<>
-			{taskOperationsModal?.bool && (
+			{TaskOperationsModalBool && (
 				<TaskOperations
-					taskType={taskType}
-					taskOperationsModal={taskOperationsModal}
-					handleAddTask={(taskType, data) => {
-						handleTasks.handleAddTask(taskType, data);
-						handleCloseModal();
-					}}
 					handleCloseModal={handleCloseModal}
-					handleEditTask={(taskType, data) => {
-						handleTasks.handleEditTask(taskType, data);
-						handleCloseModal();
-					}}
+					operationType={operationType}
+					taskType={taskType}
+					handleOperation={operationType.toLowerCase() === "add" ? handleAddTask : handleEditTask}
+					editDefaultValue={operationType.toLowerCase() === "edit" ? editDefaultValue : null}
 				/>
 			)}
-
 			<section className="parent SINGLE_TASK_CONTAINER w-80 h-auto pb-4 bg-white bg-opacity-50 rounded-xl shadow-[3px_4px_20px_-4px_#ffffff61]">
 				<div className="task_header flex justify-between p-3">
 					<p className="font-semibold">{title}</p>
 					<span className="w-5 h-5 bg-white bg-opacity-60 rounded-full flex text-[10px] justify-center items-center font-semibold text-gray-500">
-						{tasks?.length || 0}
+						{tasks?.length}
 					</span>
 				</div>
 
 				<section className="mt-2 w-full flex flex-col gap-4">
-					{!myTaskState.loading && (
-						<Droppable droppableId={taskType}>
-							{(provided, snapshot) => {
-								return (
-									<section {...provided.droppableProps} ref={provided.innerRef} className="child TASKS mx-3 flex flex-col">
-										{tasks?.map((task, ind) => {
-											return (
-												<SingleTask
-													key={task._id}
-													taskType={taskType}
-													index={ind}
-													handleDeleteTask={handleTasks.handleDeleteTask}
-													handleOpenModal={handleOpenModal}
-													task={task}
-												/>
-											);
-										})}
-										{provided.placeholder}
-									</section>
-								);
-							}}
-						</Droppable>
-					)}
-
-					{myTaskState.loading && (
-						<section className="w-full h-full flex justify-center items-center">
-							<div className="w-full h-10">
-								<Loader />
-							</div>
-						</section>
-					)}
+					<Droppable droppableId={taskType?.toLowerCase()}>
+						{(provided, snapshot) => {
+							return (
+								<section {...provided.droppableProps} ref={provided.innerRef} className="child TASKS mx-3 flex flex-col">
+									{tasks.map((task, index) => {
+										return (
+											<SingleTask
+												key={task._id}
+												index={index}
+												task={task}
+												setOperationType={setOperationType}
+												handleOpenModal={handleModalAndEditDefaultValue}
+											/>
+										);
+									})}
+									{provided.placeholder}
+								</section>
+							);
+						}}
+					</Droppable>
 
 					<div className="w-full h-auto flex justify-end px-3">
+						{/* Add a task */}
 						<button
-							onClick={() => handleOpenModal("add")}
+							onClick={() => {
+								handleOpenModal();
+								setOperationType("add");
+							}}
 							className="bg-green-500 w-6 h-6 rounded-full text-white flex justify-center items-center"
 						>
 							<MdOutlineAdd />

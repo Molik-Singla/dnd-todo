@@ -2,11 +2,24 @@ import React from "react";
 
 // 🚀🚀 Components / Hooks -----------------------------------------------/////////////////////////////////////////////////////////////////
 import { Draggable } from "react-beautiful-dnd";
+import { useDispatch } from "react-redux";
+import { apiDeleteTask } from "../features/taskSlice";
 
 // 🚀🚀 Icons / CSS ------------------------------------------------------/////////////////////////////////////////////////////////////////
 import { MdDeleteOutline, MdOutlineModeEditOutline } from "react-icons/md";
 
-const SingleTask = ({ task, taskType, index, handleDeleteTask, handleOpenModal }) => {
+const SingleTask = ({ task, index, setOperationType, handleOpenModal }) => {
+	// 🚀🚀 States -----------------------------------------------------------/////////////////////////////////////////////////////////////
+	const dispatch = useDispatch();
+
+	const handleDeleteTask = () => {
+		try {
+			dispatch(apiDeleteTask({ ...task, id: task._id }));
+		} catch (err) {
+			toastError(err?.message || "Something went wrong");
+		}
+	};
+
 	return (
 		<Draggable key={task._id} draggableId={task._id} index={index}>
 			{(provided) => {
@@ -20,20 +33,19 @@ const SingleTask = ({ task, taskType, index, handleDeleteTask, handleOpenModal }
 						<div className="flex gap-2 justify-between items-center">
 							<p className="text-sm">{task?.title}</p>
 							<div className="flex gap-2">
+								{/* Edit Task */}
 								<button
 									onClick={() => {
-										handleOpenModal("edit", { id: task?.id, title: task?.title });
+										setOperationType("edit");
+										handleOpenModal(task);
 									}}
 									className="bg-green-500 w-6 h-6 rounded-full text-white flex justify-center items-center"
 								>
 									<MdOutlineModeEditOutline className="font-bold " />
 								</button>
-								<button
-									onClick={() => {
-										handleDeleteTask(taskType, task?.id);
-									}}
-									className="bg-red-500 w-6 h-6 rounded-full text-white flex justify-center items-center"
-								>
+
+								{/* Delete Task */}
+								<button onClick={handleDeleteTask} className="bg-red-500 w-6 h-6 rounded-full text-white flex justify-center items-center">
 									<MdDeleteOutline className="font-bold " />
 								</button>
 							</div>

@@ -5,7 +5,7 @@ const Loader = () => {
 		<div className="w-full h-full py-[6px] flex justify-center items-center" role="status">
 			<svg
 				aria-hidden="true"
-				className="w-auto h-full text-white animate-spin fill-slate-300"
+				className="w-auto h-full text-white animate-spin fill-slate-400"
 				viewBox="0 0 100 101"
 				fill="none"
 				xmlns="http://www.w3.org/2000/svg"

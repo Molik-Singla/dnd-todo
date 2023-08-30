@@ -16,7 +16,6 @@ const App = () => {
 
 	// 🚀🚀 useEffects / Functions -------------------------------------------/////////////////////////////////////////////////////////////
 	useEffect(() => {
-		console.log(Cookies.get("token"));
 		if (Cookies.get("token")) navigate("/");
 		else navigate("/auth");
 	}, [navigate]);

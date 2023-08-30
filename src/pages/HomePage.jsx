@@ -1,23 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 // 🚀🚀 Components / Hooks -----------------------------------------------/////////////////////////////////////////////////////////////////
+import { useDispatch, useSelector } from "react-redux";
 import { DragDropContext } from "react-beautiful-dnd";
 import SingleTaskCard from "../components/SingleTaskCard";
-import { useDispatch } from "react-redux";
-import { apiAddTask, apiGetTasks, selectTaskState, updateTasksPosition } from "../features/taskSlice";
-import { useSelector } from "react-redux";
+import { apiEditTask, apiGetTasks, selectTaskState, updateTasksPosition } from "../features/taskSlice";
+import { toastError } from "./../helpers/ToastFunctions";
+import LoaderModal from "../components/modals/LoaderModal";
+
+function capitalizeFirstLetter(str) {
+	return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
 const HomePage = () => {
 	// 🚀🚀 States -----------------------------------------------------------/////////////////////////////////////////////////////////////
 	const dispatch = useDispatch();
 	const taskState = useSelector(selectTaskState);
 
-	const taskTypesForApi = (taskType) => {
-		return taskType.toLowerCase() === "todo" ? "To-Do" : taskType.toLowerCase() === "doing" ? "Doing" : "Done";
-	};
-
-	const [tasks, setTasks] = useState();
-	const handleDragEnd = (result) => {
+	// 🚀🚀 useEffects / Functions -------------------------------------------/////////////////////////////////////////////////////////////
+	const handleDragEnd = async (result) => {
 		const { destination, source } = result;
 		if (!destination) return;
 
@@ -48,40 +49,39 @@ const HomePage = () => {
 			done.splice(destination.index, 0, add);
 		}
 
+		// For api
+		try {
+			await dispatch(apiEditTask({ id: add._id, status: capitalizeFirstLetter(destination.droppableId) })).unwrap();
+		} catch (err) {
+			toastError(err?.message || "Something went wrong");
+		}
+
+		// For local state
 		dispatch(updateTasksPosition({ todo, doing, done }));
 	};
 
-	const handleAddTask = (taskType, newTask) => {
-		dispatch(apiAddTask({ title: newTask?.title, status: taskTypesForApi(taskType) }));
-	};
-	const handleEditTask = (taskType, updatedTask) => {
-		setTasks((prevTasks) => ({
-			...prevTasks,
-			[taskType]: prevTasks[taskType].map((prevTask) => (prevTask?.id === updatedTask?.id ? updatedTask : prevTask)),
-		}));
-	};
-	const handleDeleteTask = (taskType, deleteId) => {
-		setTasks((prevTasks) => ({ ...prevTasks, [taskType]: prevTasks[taskType].filter((prevTask) => prevTask?.id !== deleteId) }));
-	};
-
-	const handleTasks = {
-		handleAddTask,
-		handleEditTask,
-		handleDeleteTask,
-	};
-
 	useEffect(() => {
-		dispatch(apiGetTasks());
+		const getTasks = async () => {
+			try {
+				await dispatch(apiGetTasks()).unwrap();
+			} catch (err) {
+				toastError(err?.message || "Something went wrong");
+			}
+		};
+		getTasks();
 	}, []);
 
 	return (
-		<DragDropContext onDragEnd={handleDragEnd}>
-			<section className="mt-8 flex flex-wrap justify-center gap-12 items-start px-4">
-				<SingleTaskCard taskType="todo" title="To Do" tasks={taskState?.tasks.todo} myTaskState={taskState} handleTasks={handleTasks} />
-				<SingleTaskCard taskType="doing" title="Doing" tasks={taskState?.tasks.doing} myTaskState={taskState} handleTasks={handleTasks} />
-				<SingleTaskCard taskType="done" title="Done" tasks={taskState?.tasks.done} myTaskState={taskState} handleTasks={handleTasks} />
-			</section>
-		</DragDropContext>
+		<>
+			{taskState?.loading && <LoaderModal />}
+			<DragDropContext onDragEnd={handleDragEnd}>
+				<section className="mt-12 flex flex-wrap justify-center gap-12 items-start px-4 h-full">
+					<SingleTaskCard taskType="Todo" title={"Todo"} tasks={taskState?.tasks?.todo} isLoading={taskState?.loading} />
+					<SingleTaskCard taskType="Doing" title={"Doing"} tasks={taskState?.tasks?.doing} isLoading={taskState?.loading} />
+					<SingleTaskCard taskType="Done" title={"Done"} tasks={taskState?.tasks?.done} isLoading={taskState?.loading} />
+				</section>
+			</DragDropContext>
+		</>
 	);
 };
 
