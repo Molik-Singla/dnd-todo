@@ -13,7 +13,7 @@ const TaskOperations = ({ taskType, taskOperationsModal, handleAddTask, handleCl
 	}, []);
 
 	const handleSubmit = () => {
-		if (taskOperationsModal?.type?.toLocaleLowerCase() === "add") handleAddTask(taskType, { id: Date.now().toString(), title: taskInput });
+		if (taskOperationsModal?.type?.toLocaleLowerCase() === "add") handleAddTask(taskType, { title: taskInput });
 		else handleEditTask(taskType, { ...taskOperationsModal?.payload, title: taskInput });
 	};
 

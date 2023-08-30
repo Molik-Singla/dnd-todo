@@ -4,11 +4,13 @@ import React, { useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
 import SingleTask from "./SingleTask";
 import TaskOperations from "./modals/TaskOperations";
+import Loader from "./Loader";
 
 // 🚀🚀 Icons / CSS ------------------------------------------------------/////////////////////////////////////////////////////////////////-
 import { MdOutlineAdd } from "react-icons/md";
 
-const SingleTaskCard = ({ tasks, title, taskType, handleTasks }) => {
+const SingleTaskCard = ({ tasks, title, taskType, myTaskState, handleTasks }) => {
+	console.log("🚀 ~ file: SingleTaskCard.jsx:12 ~ SingleTaskCard ~ tasks:", tasks);
 	// 🚀🚀 States -----------------------------------------------------------/////////////////////////////////////////////////////////////
 	const [taskOperationsModal, setTaskOperationsModal] = useState({
 		bool: false,
@@ -46,27 +48,37 @@ const SingleTaskCard = ({ tasks, title, taskType, handleTasks }) => {
 				</div>
 
 				<section className="mt-2 w-full flex flex-col gap-4">
-					<Droppable droppableId={taskType}>
-						{(provided, snapshot) => {
-							return (
-								<section {...provided.droppableProps} ref={provided.innerRef} className="child TASKS mx-3 flex flex-col">
-									{tasks?.map((task, ind) => {
-										return (
-											<SingleTask
-												key={task.id}
-												taskType={taskType}
-												index={ind}
-												handleDeleteTask={handleTasks.handleDeleteTask}
-												handleOpenModal={handleOpenModal}
-												task={task}
-											/>
-										);
-									})}
-									{provided.placeholder}
-								</section>
-							);
-						}}
-					</Droppable>
+					{!myTaskState.loading && (
+						<Droppable droppableId={taskType}>
+							{(provided, snapshot) => {
+								return (
+									<section {...provided.droppableProps} ref={provided.innerRef} className="child TASKS mx-3 flex flex-col">
+										{tasks?.map((task, ind) => {
+											return (
+												<SingleTask
+													key={task._id}
+													taskType={taskType}
+													index={ind}
+													handleDeleteTask={handleTasks.handleDeleteTask}
+													handleOpenModal={handleOpenModal}
+													task={task}
+												/>
+											);
+										})}
+										{provided.placeholder}
+									</section>
+								);
+							}}
+						</Droppable>
+					)}
+
+					{myTaskState.loading && (
+						<section className="w-full h-full flex justify-center items-center">
+							<div className="w-full h-10">
+								<Loader />
+							</div>
+						</section>
+					)}
 
 					<div className="w-full h-auto flex justify-end px-3">
 						<button

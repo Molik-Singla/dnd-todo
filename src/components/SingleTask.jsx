@@ -8,7 +8,7 @@ import { MdDeleteOutline, MdOutlineModeEditOutline } from "react-icons/md";
 
 const SingleTask = ({ task, taskType, index, handleDeleteTask, handleOpenModal }) => {
 	return (
-		<Draggable key={task.id} draggableId={task.id} index={index}>
+		<Draggable key={task._id} draggableId={task._id} index={index}>
 			{(provided) => {
 				return (
 					<section

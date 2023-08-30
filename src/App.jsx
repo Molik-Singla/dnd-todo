@@ -1,16 +1,26 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useEffect } from "react";
 
 // 🚀🚀 Components / Hooks -----------------------------------------------/////////////////////////////////////////////////////////////////
-import Header from "./components/Header";
+import Cookies from "js-cookie";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import AppLayout from "./components/AppLayout";
 import MainLayout from "./components/MainLayout";
 import HomePage from "./pages/HomePage";
 import AuthenticationPage from "./pages/AuthenticationPage";
-import { Route, Routes } from "react-router-dom";
-import ProtectedRoute from "./routes/ProtectedRoute";
-import AppLayout from "./components/AppLayout";
 
 const App = () => {
+	// 🚀🚀 States -----------------------------------------------------------/////////////////////////////////////////////////////////////
+	const navigate = useNavigate();
+
+	// 🚀🚀 useEffects / Functions -------------------------------------------/////////////////////////////////////////////////////////////
+	useEffect(() => {
+		console.log(Cookies.get("token"));
+		if (Cookies.get("token")) navigate("/");
+		else navigate("/auth");
+	}, [navigate]);
+
 	return (
 		<MainLayout>
 			<Routes>
