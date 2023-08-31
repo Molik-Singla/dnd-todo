@@ -8,7 +8,7 @@ import { toastError } from "../../helpers/ToastFunctions";
 
 const ProfileModal = ({ handleCloseModal }) => {
 	// 🚀🚀 States -----------------------------------------------------------/////////////////////////////////////////////////////////////
-	const user = JSON.parse(Cookies.get("user") || {});
+	const user = JSON.parse(Cookies.get("user") || "{}");
 
 	if (!user) {
 		toastError("Please login to continue");
