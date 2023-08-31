@@ -72,10 +72,11 @@ const taskSlice = createSlice({
 	extraReducers: (builder) => {
 		builder
 			.addCase(apiAddTask.fulfilled, (state, action) => {
-				const status = action.payload.status.toLowerCase();
-				const index = state.tasks[status].findIndex((task) => task._id === action.payload?.uniKey);
-				delete action.payload.uniKey;
-				state.tasks[status][index] = action.payload;
+				// const status = action.payload.status.toLowerCase();
+				// const index = state.tasks[status].findIndex((task) => task._id === action.payload?.uniKey);
+				// delete action.payload.uniKey;
+				// state.tasks[status][index] = action.payload;
+				state.tasks[action.payload.status.toLowerCase()].push(action.payload);
 			})
 			.addCase(apiGetTasks.fulfilled, (state, action) => {
 				const myPayload = action.payload;

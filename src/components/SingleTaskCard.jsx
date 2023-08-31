@@ -24,7 +24,7 @@ const SingleTaskCard = ({ title, tasks, taskType }) => {
 		const uniKey = nanoid();
 		const data = { ...task, _id: uniKey };
 		try {
-			dispatch(addTask(data));
+			// dispatch(addTask(data));
 			await dispatch(apiAddTask({ ...task, uniKey })).unwrap();
 		} catch (err) {
 			toastError(err?.message || "Something went wrong");
@@ -70,17 +70,18 @@ const SingleTaskCard = ({ title, tasks, taskType }) => {
 						{(provided) => {
 							return (
 								<section {...provided.droppableProps} ref={provided.innerRef} className="child TASKS mx-3 flex flex-col">
-									{tasks.map((task, index) => {
-										return (
-											<SingleTask
-												key={task._id}
-												index={index}
-												task={task}
-												setOperationType={setOperationType}
-												handleOpenModal={handleModalAndEditDefaultValue}
-											/>
-										);
-									})}
+									{tasks?.length > 0 &&
+										tasks?.map((task, index) => {
+											return (
+												<SingleTask
+													key={task._id}
+													index={index}
+													task={task}
+													setOperationType={setOperationType}
+													handleOpenModal={handleModalAndEditDefaultValue}
+												/>
+											);
+										})}
 									{provided.placeholder}
 								</section>
 							);
