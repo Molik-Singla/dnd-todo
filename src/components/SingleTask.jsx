@@ -42,14 +42,14 @@ const SingleTask = ({ task, index, setOperationType, handleOpenModal }) => {
 										setOperationType("edit");
 										handleOpenModal(task);
 									}}
-									className="bg-green-500 w-6 h-6 rounded-full text-white flex justify-center items-center"
+									className="bg-green-500 w-8 h-8 rounded-full text-white flex justify-center items-center"
 								>
-									<MdOutlineModeEditOutline className="font-bold " />
+									<MdOutlineModeEditOutline className="font-bold text-xl" />
 								</button>
 
 								{/* Delete Task */}
-								<button onClick={handleDeleteTask} className="bg-red-500 w-6 h-6 rounded-full text-white flex justify-center items-center">
-									<MdDeleteOutline className="font-bold " />
+								<button onClick={handleDeleteTask} className="bg-red-500 w-8 h-8 rounded-full text-white flex justify-center items-center">
+									<MdDeleteOutline className="font-bold text-xl" />
 								</button>
 							</div>
 						</div>

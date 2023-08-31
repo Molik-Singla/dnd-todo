@@ -60,7 +60,7 @@ const SingleTaskCard = ({ title, tasks, taskType }) => {
 			<section className="parent SINGLE_TASK_CONTAINER w-80 h-auto pb-4 bg-white bg-opacity-50 rounded-xl shadow-[3px_4px_20px_-4px_#ffffff61]">
 				<div className="task_header flex justify-between p-3">
 					<p className="font-semibold">{title}</p>
-					<span className="w-5 h-5 bg-white bg-opacity-60 rounded-full flex text-[10px] justify-center items-center font-semibold text-gray-500">
+					<span className="w-6 h-6 bg-white bg-opacity-60 rounded-full flex text-xs justify-center items-center font-semibold text-gray-500">
 						{tasks?.length}
 					</span>
 				</div>
@@ -95,9 +95,9 @@ const SingleTaskCard = ({ title, tasks, taskType }) => {
 								handleOpenModal();
 								setOperationType("add");
 							}}
-							className="bg-green-500 w-6 h-6 rounded-full text-white flex justify-center items-center"
+							className="bg-green-500 w-8 h-8 rounded-full text-white flex justify-center items-center"
 						>
-							<MdOutlineAdd />
+							<MdOutlineAdd className="text-2xl" />
 						</button>
 					</div>
 				</section>
