@@ -10,7 +10,7 @@ const ProfileModal = ({ handleCloseModal }) => {
 	// 🚀🚀 States -----------------------------------------------------------/////////////////////////////////////////////////////////////
 	const user = JSON.parse(Cookies.get("user") || "{}");
 
-	if (!user) {
+	if (Object.keys(user).length === 0) {
 		toastError("Please login to continue");
 		handleCloseModal();
 		return;
