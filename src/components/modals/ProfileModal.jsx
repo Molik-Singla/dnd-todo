@@ -4,10 +4,17 @@ import ReactDOM from "react-dom";
 
 // 🚀🚀 Icons / CSS ------------------------------------------------------/////////////////////////////////////////////////////////////////
 import { RxCross1 } from "react-icons/rx";
+import { toastError } from "../../helpers/ToastFunctions";
 
 const ProfileModal = ({ handleCloseModal }) => {
 	// 🚀🚀 States -----------------------------------------------------------/////////////////////////////////////////////////////////////
-	const user = JSON.parse(Cookies.get("user"));
+	const user = JSON.parse(Cookies.get("user") || {});
+
+	if (!user) {
+		toastError("Please login to continue");
+		handleCloseModal();
+		return;
+	}
 
 	return ReactDOM.createPortal(
 		<section className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-70 flex justify-center items-center font-primary">
