@@ -6,7 +6,6 @@ import { DragDropContext } from "react-beautiful-dnd";
 import SingleTaskCard from "../components/SingleTaskCard";
 import { apiEditTask, apiGetTasks, selectTaskState, updateTasksPosition } from "../features/taskSlice";
 import { toastError } from "./../helpers/ToastFunctions";
-import LoaderModal from "../components/modals/LoaderModal";
 
 function capitalizeFirstLetter(str) {
 	return str.charAt(0).toUpperCase() + str.slice(1);
@@ -41,23 +40,19 @@ const HomePage = () => {
 		}
 
 		// For adding to its destination
-		if (destination.droppableId === "todo") {
-			todo.splice(destination.index, 0, add);
-		} else if (destination.droppableId === "doing") {
-			doing.splice(destination.index, 0, add);
-		} else if (destination.droppableId === "done") {
-			done.splice(destination.index, 0, add);
-		}
-
-		// For api
-		try {
-			await dispatch(apiEditTask({ id: add._id, status: capitalizeFirstLetter(destination.droppableId) })).unwrap();
-		} catch (err) {
-			toastError(err?.message || "Something went wrong");
-		}
+		if (destination.droppableId === "todo") todo.splice(destination.index, 0, add);
+		else if (destination.droppableId === "doing") doing.splice(destination.index, 0, add);
+		else if (destination.droppableId === "done") done.splice(destination.index, 0, add);
 
 		// For local state
 		dispatch(updateTasksPosition({ todo, doing, done }));
+
+		// For api
+		try {
+			await dispatch(apiEditTask({ _id: add._id, status: capitalizeFirstLetter(destination.droppableId) })).unwrap();
+		} catch (err) {
+			toastError(err?.message || "Something went wrong");
+		}
 	};
 
 	useEffect(() => {
@@ -73,7 +68,6 @@ const HomePage = () => {
 
 	return (
 		<>
-			{taskState?.loading && <LoaderModal />}
 			<DragDropContext onDragEnd={handleDragEnd}>
 				<section className="mt-12 flex flex-wrap justify-center gap-12 items-start px-4 h-full">
 					<SingleTaskCard taskType="Todo" title={"Todo"} tasks={taskState?.tasks?.todo} isLoading={taskState?.loading} />

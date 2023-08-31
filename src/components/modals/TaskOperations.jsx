@@ -11,7 +11,7 @@ const TaskOperations = ({ operationType, editDefaultValue, taskType, handleOpera
 	}, []);
 
 	const handleSubmit = () => {
-		if (operationType.toLowerCase() === "edit") handleOperation({ title: taskInput, status: taskType, id: editDefaultValue._id });
+		if (operationType.toLowerCase() === "edit") handleOperation({ title: taskInput, status: taskType, _id: editDefaultValue._id });
 		else handleOperation({ title: taskInput, status: taskType });
 		handleCloseModal();
 	};

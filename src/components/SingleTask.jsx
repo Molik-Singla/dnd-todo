@@ -3,7 +3,7 @@ import React from "react";
 // 🚀🚀 Components / Hooks -----------------------------------------------/////////////////////////////////////////////////////////////////
 import { Draggable } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
-import { apiDeleteTask } from "../features/taskSlice";
+import { apiDeleteTask, deleteTask } from "../features/taskSlice";
 
 // 🚀🚀 Icons / CSS ------------------------------------------------------/////////////////////////////////////////////////////////////////
 import { MdDeleteOutline, MdOutlineModeEditOutline } from "react-icons/md";
@@ -12,9 +12,11 @@ const SingleTask = ({ task, index, setOperationType, handleOpenModal }) => {
 	// 🚀🚀 States -----------------------------------------------------------/////////////////////////////////////////////////////////////
 	const dispatch = useDispatch();
 
-	const handleDeleteTask = () => {
+	// 🚀🚀 useEffects / Functions -------------------------------------------/////////////////////////////////////////////////////////////
+	const handleDeleteTask = async () => {
 		try {
-			dispatch(apiDeleteTask({ ...task, id: task._id }));
+			dispatch(deleteTask(task));
+			await dispatch(apiDeleteTask(task)).unwrap();
 		} catch (err) {
 			toastError(err?.message || "Something went wrong");
 		}

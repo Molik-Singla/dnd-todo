@@ -3,10 +3,11 @@ import React, { useState } from "react";
 // 🚀🚀 Components / Hooks -----------------------------------------------/////////////////////////////////////////////////////////////////
 import { useDispatch } from "react-redux";
 import { Droppable } from "react-beautiful-dnd";
-import { apiAddTask, apiEditTask } from "../features/taskSlice";
+import { addTask, apiAddTask, apiEditTask, editTask } from "../features/taskSlice";
 import SingleTask from "./SingleTask";
 import TaskOperations from "./modals/TaskOperations";
 import { toastError } from "../helpers/ToastFunctions";
+import { nanoid } from "@reduxjs/toolkit";
 
 // 🚀🚀 Icons / CSS ------------------------------------------------------/////////////////////////////////////////////////////////////////-
 import { MdOutlineAdd } from "react-icons/md";
@@ -20,15 +21,19 @@ const SingleTaskCard = ({ title, tasks, taskType }) => {
 
 	// 🚀🚀 useEffects / Functions -------------------------------------------/////////////////////////////////////////////////////////////
 	const handleAddTask = async (task) => {
+		const uniKey = nanoid();
+		const data = { ...task, _id: uniKey };
 		try {
-			await dispatch(apiAddTask(task)).unwrap();
+			dispatch(addTask(data));
+			await dispatch(apiAddTask({ ...task, uniKey })).unwrap();
 		} catch (err) {
 			toastError(err?.message || "Something went wrong");
 		}
 	};
-	const handleEditTask = (task) => {
+	const handleEditTask = async (task) => {
 		try {
-			dispatch(apiEditTask({ id: task.id, title: task.title }));
+			dispatch(editTask(task));
+			await dispatch(apiEditTask(task)).unwrap();
 		} catch (err) {
 			toastError(err?.message || "Something went wrong");
 		}
@@ -62,7 +67,7 @@ const SingleTaskCard = ({ title, tasks, taskType }) => {
 
 				<section className="mt-2 w-full flex flex-col gap-4">
 					<Droppable droppableId={taskType?.toLowerCase()}>
-						{(provided, snapshot) => {
+						{(provided) => {
 							return (
 								<section {...provided.droppableProps} ref={provided.innerRef} className="child TASKS mx-3 flex flex-col">
 									{tasks.map((task, index) => {
