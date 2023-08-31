@@ -8,6 +8,7 @@ const initialState = {
 		todo: [],
 		doing: [],
 		done: [],
+		archived: [],
 	},
 	// loading: false,
 	error: null,
@@ -84,13 +85,15 @@ const taskSlice = createSlice({
 				const todo = [];
 				const doing = [];
 				const done = [];
+				const archived = [];
 				myPayload &&
 					myPayload?.forEach((task) => {
 						if (task.status.toLowerCase() === "todo") todo.push(task);
 						else if (task.status.toLowerCase() === "doing") doing.push(task);
 						else if (task.status.toLowerCase() === "done") done.push(task);
+						else if (task.status.toLowerCase() === "archived") archived.push(task);
 					});
-				state.tasks = { todo, doing, done };
+				state.tasks = { todo, doing, done, archived };
 			});
 		builder.addMatcher(isPending(apiGetTasks, apiAddTask, apiDeleteTask, apiEditTask), (state, action) => {
 			state.error = null;

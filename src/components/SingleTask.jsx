@@ -9,7 +9,7 @@ import { toastError } from "../helpers/ToastFunctions";
 // 🚀🚀 Icons / CSS ------------------------------------------------------/////////////////////////////////////////////////////////////////
 import { MdDeleteOutline, MdOutlineModeEditOutline } from "react-icons/md";
 
-const SingleTask = ({ task, index, setOperationType, handleOpenModal }) => {
+const SingleTask = ({ task, index, isArchive = false, setOperationType, handleOpenModal }) => {
 	// 🚀🚀 States -----------------------------------------------------------/////////////////////////////////////////////////////////////
 	const dispatch = useDispatch();
 
@@ -37,15 +37,17 @@ const SingleTask = ({ task, index, setOperationType, handleOpenModal }) => {
 							<p className="text-sm">{task?.title}</p>
 							<div className="flex gap-2">
 								{/* Edit Task */}
-								<button
-									onClick={() => {
-										setOperationType("edit");
-										handleOpenModal(task);
-									}}
-									className="bg-green-500 w-8 h-8 rounded-full text-white flex justify-center items-center"
-								>
-									<MdOutlineModeEditOutline className="font-bold text-xl" />
-								</button>
+								{!isArchive && (
+									<button
+										onClick={() => {
+											setOperationType("edit");
+											handleOpenModal(task);
+										}}
+										className="bg-green-500 w-8 h-8 rounded-full text-white flex justify-center items-center"
+									>
+										<MdOutlineModeEditOutline className="font-bold text-xl" />
+									</button>
+								)}
 
 								{/* Delete Task */}
 								<button onClick={handleDeleteTask} className="bg-red-500 w-8 h-8 rounded-full text-white flex justify-center items-center">
