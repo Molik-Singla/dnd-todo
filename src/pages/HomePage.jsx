@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DragDropContext } from "react-beautiful-dnd";
 import SingleTaskCard from "../components/SingleTaskCard";
-import { apiEditTask, apiGetTasks, selectTaskState, updateTasksPosition } from "../features/taskSlice";
+import { apiEditTask, apiGetTasks, editTask, selectTaskState, updateTasksPosition } from "../features/taskSlice";
 import { toastError } from "./../helpers/ToastFunctions";
 
 function capitalizeFirstLetter(str) {
@@ -47,9 +47,12 @@ const HomePage = () => {
 		// For local state
 		dispatch(updateTasksPosition({ todo, doing, done }));
 
+		const dataToBeUpdate = { _id: add._id, status: capitalizeFirstLetter(destination.droppableId) };
+		dispatch(editTask(dataToBeUpdate));
+
 		// For api
 		try {
-			await dispatch(apiEditTask({ _id: add._id, status: capitalizeFirstLetter(destination.droppableId) })).unwrap();
+			await dispatch(apiEditTask(dataToBeUpdate)).unwrap();
 		} catch (err) {
 			toastError(err?.message || "Something went wrong");
 		}

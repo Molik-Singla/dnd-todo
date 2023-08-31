@@ -66,7 +66,8 @@ const taskSlice = createSlice({
 		editTask: (state, action) => {
 			const status = action.payload.status.toLowerCase();
 			const index = state.tasks[status].findIndex((task) => task._id === action.payload._id);
-			state.tasks[status][index] = action.payload;
+			const oldData = state.tasks[status][index];
+			state.tasks[status][index] = { ...oldData, ...action.payload };
 		},
 	},
 	extraReducers: (builder) => {

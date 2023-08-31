@@ -52,8 +52,8 @@ const AuthenticationPage = () => {
 				).unwrap();
 				toastSuccess("Login Successful");
 			}
-			let inOneDay = new Date(new Date().getTime() + 60 * 60 * 24 * 1000);
-			Cookies.set("token", response.token, { expires: inOneDay });
+			let inNintyDay = new Date(new Date().getTime() + 60 * 60 * 24 * 90 * 1000);
+			Cookies.set("token", response.token, { expires: inNintyDay });
 			navigate("/");
 		} catch (err) {
 			toastError(err?.message || "Something went wrong");
