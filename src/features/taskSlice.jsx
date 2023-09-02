@@ -19,7 +19,7 @@ export const apiGetTasks = createAsyncThunk("apiGetTasks", async (payload, thunk
 		const result = await axios.get(`${API_URL}/task`, { headers: { Authorization: `Bearer ${Cookies.get("token")}` } });
 		return result?.data?.data?.tasks || [];
 	} catch (error) {
-		return thunkAPI.rejectWithValue(error?.response?.data);
+		return thunkAPI.rejectWithValue({ ...error?.response?.data, status: error?.response?.status });
 	}
 });
 export const apiAddTask = createAsyncThunk("apiAddTask", async (payload, thunkAPI) => {

@@ -23,6 +23,7 @@ export default {
 		extend: {
 			fontFamily: {
 				primary: ["Noto Sans", "sans-serif"],
+				secondary: ["Permanent Marker", "cursive"],
 			},
 		},
 	},

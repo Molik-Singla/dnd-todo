@@ -6,6 +6,8 @@ import { DragDropContext } from "react-beautiful-dnd";
 import SingleTaskCard from "../components/SingleTaskCard";
 import { apiEditTask, apiGetTasks, editTask, selectTaskState, updateTasksPosition } from "../features/taskSlice";
 import { toastError } from "./../helpers/ToastFunctions";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 function capitalizeFirstLetter(str) {
 	return str.charAt(0).toUpperCase() + str.slice(1);
@@ -13,6 +15,7 @@ function capitalizeFirstLetter(str) {
 
 const HomePage = () => {
 	// 🚀🚀 States -----------------------------------------------------------/////////////////////////////////////////////////////////////
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const taskState = useSelector(selectTaskState);
 
@@ -68,6 +71,13 @@ const HomePage = () => {
 			try {
 				await dispatch(apiGetTasks()).unwrap();
 			} catch (err) {
+				if (err?.status === 401) {
+					Cookies.remove("token");
+					Cookies.remove("user");
+					navigate("/auth");
+					toastError("Please login to continue");
+					return;
+				}
 				toastError(err?.message || "Something went wrong");
 			}
 		};

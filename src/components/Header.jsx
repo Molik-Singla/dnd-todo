@@ -18,7 +18,7 @@ const Header = ({ handleOpenModal }) => {
 	return (
 		<header className="w-full h-14 bg-transparent flex justify-between items-center px-4">
 			<section>
-				<span className="font-black text-3xl text-black tracking-wider">Trello</span>
+				<span className="font-black text-2xl md:text-3xl font-secondary text-white tracking-widest">Task Tide</span>
 			</section>
 			<section className="relative">
 				<section className="flex gap-4 items-center">
