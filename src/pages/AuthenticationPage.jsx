@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 // 🚀🚀 Components / Hooks -----------------------------------------------/////////////////////////////////////////////////////////////////
 import Cookies from "js-cookie";
@@ -13,6 +13,9 @@ const AuthenticationPage = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const userState = useSelector(selectUserState);
+
+	const emailRef = useRef(null);
+	const nameRef = useRef(null);
 
 	const [isLoginBool, setIsLoginBool] = useState(true);
 	const [inputValues, setInputValues] = useState({ myEmail: "", myPassword: "", myName: "" });
@@ -72,6 +75,11 @@ const AuthenticationPage = () => {
 		}
 	};
 
+	useEffect(() => {
+		if (isLoginBool) emailRef?.current?.focus();
+		else nameRef?.current?.focus();
+	}, [isLoginBool]);
+
 	return (
 		<>
 			{userState.loading && <LoaderModal />}
@@ -96,12 +104,7 @@ const AuthenticationPage = () => {
 						</button>
 					</section>
 
-					<form
-						onSubmit={handleSubmit}
-						autoComplete="off"
-						autoCapitalize="off"
-						className="flex flex-col gap-4 md:gap-6 items-center py-6 px-4 md:px-6 mt-4"
-					>
+					<form onSubmit={handleSubmit} className="flex flex-col gap-4 md:gap-6 items-center py-6 px-4 md:px-6 mt-4">
 						{!isLoginBool && (
 							<input
 								className={inputClasses}
@@ -111,7 +114,8 @@ const AuthenticationPage = () => {
 								value={inputValues.myName}
 								onChange={handleOnChange}
 								onKeyDown={(evt) => evt.key === "Enter" && !isButtonDisabled && handleSubmit(evt)}
-								autoComplete="new-password"
+								autoComplete="on"
+								ref={nameRef}
 							/>
 						)}
 						<input
@@ -122,7 +126,8 @@ const AuthenticationPage = () => {
 							value={inputValues.myEmail}
 							onChange={handleOnChange}
 							onKeyDown={(evt) => evt.key === "Enter" && !isButtonDisabled && handleSubmit(evt)}
-							autoComplete="off"
+							autoComplete="on"
+							ref={emailRef}
 						/>
 						<input
 							className={inputClasses}

@@ -48,10 +48,9 @@ const SingleTaskCard = ({ title, tasks, taskType, isArchive = false }) => {
 	};
 	const handleCloseModal = () => setTaskOperationsModalBool(false);
 
-	// useEffect(() => {
-	// 	if (isArchive && tasks?.length === 0) setShowTasksArchiveBool(false);
-	// 	isArchive && setShowTasksArchiveBool(false);
-	// }, [tasks]);
+	useEffect(() => {
+		if (isArchive && tasks?.length === 0) setShowTasksArchiveBool(false);
+	}, [tasks]);
 
 	return (
 		<>

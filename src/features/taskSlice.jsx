@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, isPending, isRejected } from "@reduxjs/t
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const API_URL = "https://taskboard-r5sb.onrender.com";
+const API_URL = import.meta.env.VITE_API_URL;
 const initialState = {
 	tasks: {
 		todo: [],

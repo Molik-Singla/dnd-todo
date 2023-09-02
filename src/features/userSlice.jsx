@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, isFulfilled, isPending, isRejected } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_URL = "https://taskboard-r5sb.onrender.com";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const initialState = {
 	user: null,
