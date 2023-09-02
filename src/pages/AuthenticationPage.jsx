@@ -137,7 +137,7 @@ const AuthenticationPage = () => {
 							value={inputValues.myPassword}
 							onChange={handleOnChange}
 							onKeyDown={(evt) => evt.key === "Enter" && !isButtonDisabled && handleSubmit(evt)}
-							autoComplete="new-password"
+							autoComplete="on"
 						/>
 
 						<button
