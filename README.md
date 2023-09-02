@@ -1,8 +1,20 @@
-# React + Vite
+# TaskTide - Drag and Drop Todo App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to TaskTide, a simple yet powerful todo app with drag and drop functionality! Organize your tasks effortlessly and stay on top of your daily goals.
 
-Currently, two official plugins are available:
+## Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Explore the live demo: [Demo](https://tasktide.netlify.app/)
+
+## Technologies Used
+
+-   **React**
+-   **Redux Toolkit**
+-   **Tailwind CSS**
+
+## Features
+
+-   **Drag and Drop**: Easily rearrange tasks by dragging and dropping them to different lists or changing their order within a list.
+-   **Simple and Intuitive**: A clean and user-friendly interface that makes task management a breeze.
+-   **Responsive Design**: TaskTide works seamlessly on desktop, tablet, and mobile devices.
+-   **Cross-Platform Sync**: Your tasks are securely stored in the cloud, so you can access them from anywhere.
