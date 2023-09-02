@@ -48,10 +48,10 @@ const SingleTaskCard = ({ title, tasks, taskType, isArchive = false }) => {
 	};
 	const handleCloseModal = () => setTaskOperationsModalBool(false);
 
-	useEffect(() => {
-		if (isArchive && tasks?.length === 0) setShowTasksArchiveBool(false);
-		isArchive && setShowTasksArchiveBool(false);
-	}, [tasks]);
+	// useEffect(() => {
+	// 	if (isArchive && tasks?.length === 0) setShowTasksArchiveBool(false);
+	// 	isArchive && setShowTasksArchiveBool(false);
+	// }, [tasks]);
 
 	return (
 		<>
@@ -119,7 +119,7 @@ const SingleTaskCard = ({ title, tasks, taskType, isArchive = false }) => {
 									handleOpenModal();
 									setOperationType("add");
 								}}
-								className="bg-green-500 w-8 h-8 rounded-full text-white flex justify-center items-center"
+								className="bg-green-500 w-8 h-8 1xl:w-9 1xl:h-9 rounded-full text-white flex justify-center items-center"
 							>
 								<MdOutlineAdd className="text-2xl" />
 							</button>

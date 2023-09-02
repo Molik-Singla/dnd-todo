@@ -7,6 +7,7 @@ import profile_img from "./../assets/Images/profile.jfif";
 
 const Header = ({ handleOpenModal }) => {
 	// 🚀🚀 States -----------------------------------------------------------/////////////////////////////////////////////////////////////
+	const user = JSON.parse(Cookies.get("user") || "{}");
 	const navigate = useNavigate();
 	const [profileOptionsBool, setProfileOptionsBool] = useState(false);
 
@@ -20,14 +21,17 @@ const Header = ({ handleOpenModal }) => {
 				<span className="font-black text-3xl text-black tracking-wider">Trello</span>
 			</section>
 			<section className="relative">
-				<button onClick={() => setProfileOptionsBool((prev) => !prev)} className="w-8 h-8">
-					<img className="rounded-full w-full h-full" src={profile_img} alt="PROFILE_IMAGE" />
-				</button>
+				<section className="flex gap-4 items-center">
+					<p className="font-semibold">{user && user?.name}</p>
+					<button onClick={() => setProfileOptionsBool((prev) => !prev)} className="w-9 h-9">
+						<img className="rounded-full w-full h-full" src={profile_img} alt="PROFILE_IMAGE" />
+					</button>
+				</section>
 
 				{profileOptionsBool && (
 					<section
 						onMouseLeave={() => setProfileOptionsBool(false)}
-						className="w-40 h-auto p-3 px-4 bg-white bg-opacity-80 rounded-lg absolute right-0 font-primary flex flex-col gap-2"
+						className="w-40 h-auto p-3 px-4 bg-white bg-opacity-80 mt-2 rounded-lg absolute right-0 font-primary flex flex-col gap-2"
 					>
 						<button onClick={handleOpenModal} className="font-medium w-full text-start hover:font-semibold">
 							Profile

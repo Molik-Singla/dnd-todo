@@ -43,14 +43,17 @@ const SingleTask = ({ task, index, isArchive = false, setOperationType, handleOp
 											setOperationType("edit");
 											handleOpenModal(task);
 										}}
-										className="bg-green-500 w-8 h-8 rounded-full text-white flex justify-center items-center"
+										className="bg-green-500 w-8 h-8 1xl:w-9 1xl:h-9 rounded-full text-white flex justify-center items-center"
 									>
 										<MdOutlineModeEditOutline className="font-bold text-xl" />
 									</button>
 								)}
 
 								{/* Delete Task */}
-								<button onClick={handleDeleteTask} className="bg-red-500 w-8 h-8 rounded-full text-white flex justify-center items-center">
+								<button
+									onClick={handleDeleteTask}
+									className="bg-red-500 w-8 h-8 1xl:w-9 1xl:h-9 rounded-full text-white flex justify-center items-center"
+								>
 									<MdDeleteOutline className="font-bold text-xl" />
 								</button>
 							</div>
