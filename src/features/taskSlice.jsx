@@ -88,11 +88,12 @@ const taskSlice = createSlice({
 				const archived = [];
 				myPayload &&
 					myPayload?.forEach((task) => {
-						if (task.status.toLowerCase() === "todo") todo.push(task);
-						else if (task.status.toLowerCase() === "doing") doing.push(task);
-						else if (task.status.toLowerCase() === "done") done.push(task);
-						else if (task.status.toLowerCase() === "archived") archived.push(task);
+						if (task.status.toLowerCase() === "todo") todo.unshift(task);
+						else if (task.status.toLowerCase() === "doing") doing.unshift(task);
+						else if (task.status.toLowerCase() === "done") done.unshift(task);
+						else if (task.status.toLowerCase() === "archived") archived.unshift(task);
 					});
+
 				state.tasks = { todo, doing, done, archived };
 			});
 		builder.addMatcher(isPending(apiGetTasks, apiAddTask, apiDeleteTask, apiEditTask), (state, action) => {

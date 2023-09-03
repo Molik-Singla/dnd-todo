@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 // 🚀🚀 Components / Hooks -----------------------------------------------/////////////////////////////////////////////////////////////////
 import { Draggable } from "react-beautiful-dnd";
@@ -8,6 +8,7 @@ import { toastError } from "../helpers/ToastFunctions";
 
 // 🚀🚀 Icons / CSS ------------------------------------------------------/////////////////////////////////////////////////////////////////
 import { MdDeleteOutline, MdOutlineModeEditOutline } from "react-icons/md";
+import { format } from "date-fns";
 
 const SingleTask = ({ task, index, isArchive = false, setOperationType, handleOpenModal }) => {
 	// 🚀🚀 States -----------------------------------------------------------/////////////////////////////////////////////////////////////
@@ -23,6 +24,11 @@ const SingleTask = ({ task, index, isArchive = false, setOperationType, handleOp
 		}
 	};
 
+	const simplyfyDate = (date) => {
+		const dateObject = new Date(date);
+		return format(dateObject, "dd/MM/yyyy hh:mm a") || date;
+	};
+
 	return (
 		<Draggable key={task._id} draggableId={task._id} index={index}>
 			{(provided) => {
@@ -34,7 +40,10 @@ const SingleTask = ({ task, index, isArchive = false, setOperationType, handleOp
 						className="SINGLE_TASK h-auto py-3 px-3 pr-2 bg-white bg-opacity-80 rounded-lg my-1"
 					>
 						<div className="flex gap-2 justify-between items-center">
-							<p className="text-sm">{task?.title}</p>
+							<section className="flex flex-col gap-2">
+								<p className={`text-sm ${task?.status === "Done" && "line-through"}`}>{task?.title}</p>
+								<p className="text-xs font-semibold text-gray-500">{simplyfyDate(task?.createdAt)}</p>
+							</section>
 							<div className="flex gap-2">
 								{/* Edit Task */}
 								{!isArchive && (
