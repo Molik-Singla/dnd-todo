@@ -8,6 +8,7 @@ import { apiEditTask, apiGetTasks, editTask, selectTaskState, updateTasksPositio
 import { toastError } from "./../helpers/ToastFunctions";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import LoaderModal from "./../components/modals/LoaderModal";
 
 function capitalizeFirstLetter(str) {
 	return str.charAt(0).toUpperCase() + str.slice(1);
@@ -86,6 +87,7 @@ const HomePage = () => {
 
 	return (
 		<>
+			{taskState?.loading && <LoaderModal />}
 			<DragDropContext onDragEnd={handleDragEnd}>
 				<section className="mt-12 flex flex-wrap justify-center gap-12 items-start px-4 h-full">
 					<SingleTaskCard taskType="Todo" title={"Todo"} tasks={taskState?.tasks?.todo} />

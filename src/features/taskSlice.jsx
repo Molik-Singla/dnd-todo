@@ -10,7 +10,7 @@ const initialState = {
 		done: [],
 		archived: [],
 	},
-	// loading: false,
+	loading: false,
 	error: null,
 };
 
@@ -74,13 +74,10 @@ const taskSlice = createSlice({
 	extraReducers: (builder) => {
 		builder
 			.addCase(apiAddTask.fulfilled, (state, action) => {
-				// const status = action.payload.status.toLowerCase();
-				// const index = state.tasks[status].findIndex((task) => task._id === action.payload?.uniKey);
-				// delete action.payload.uniKey;
-				// state.tasks[status][index] = action.payload;
 				state.tasks[action.payload.status.toLowerCase()].push(action.payload);
 			})
 			.addCase(apiGetTasks.fulfilled, (state, action) => {
+				state.loading = false;
 				const myPayload = action.payload;
 				const todo = [];
 				const doing = [];
@@ -95,11 +92,19 @@ const taskSlice = createSlice({
 					});
 
 				state.tasks = { todo, doing, done, archived };
+			})
+			.addCase(apiGetTasks.pending, (state) => {
+				state.error = null;
+				state.loading = true;
+			})
+			.addCase(apiGetTasks.rejected, (state, action) => {
+				state.loading = false;
+				state.error = action.payload;
 			});
-		builder.addMatcher(isPending(apiGetTasks, apiAddTask, apiDeleteTask, apiEditTask), (state, action) => {
+		builder.addMatcher(isPending(apiAddTask, apiDeleteTask, apiEditTask), (state) => {
 			state.error = null;
 		});
-		builder.addMatcher(isRejected(apiGetTasks, apiAddTask, apiDeleteTask, apiEditTask), (state, action) => {
+		builder.addMatcher(isRejected(apiAddTask, apiDeleteTask, apiEditTask), (state, action) => {
 			state.error = action.payload;
 		});
 	},
