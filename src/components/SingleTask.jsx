@@ -42,7 +42,7 @@ const SingleTask = ({ task, index, isArchive = false, setOperationType, handleOp
 						<div className="flex gap-2 justify-between items-center">
 							<section className="flex flex-col gap-2">
 								<p className={`text-sm ${task?.status === "Done" && "line-through"}`}>{task?.title}</p>
-								<p className="text-xs font-semibold text-gray-500">{simplyfyDate(task?.createdAt)}</p>
+								<p className="text-xs text-gray-500">{simplyfyDate(task?.createdAt)}</p>
 							</section>
 							<div className="flex gap-2">
 								{/* Edit Task */}
